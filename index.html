@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Career Day Match | Maclay School</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#15407c;--blue:#5181c5;--ink:#1b2433;--gray:#5d6878;--line:#d9e2ef;--wash:#eef3fa;--white:#fff;
+ font-family:"Figtree",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--white)}
+*{box-sizing:border-box}
+body{margin:0;padding:24px 16px 40px}
+.wrap{max-width:720px;margin:0 auto}
+button{font:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.screen{display:none}.screen.on{display:block}
+h1{font-size:clamp(2.3rem,7vw,3.6rem);line-height:1;font-weight:800;color:var(--navy);margin:0 0 18px;letter-spacing:-.02em}
+.lead{font-size:1.15rem;line-height:1.55;max-width:34em;margin:0 0 10px}
+.sub{color:var(--gray);line-height:1.5;margin:0 0 28px;max-width:34em}
+.btn{background:var(--navy);color:var(--white);border:0;border-radius:6px;padding:15px 26px;font-weight:700;font-size:1.05rem}
+.btn:hover{background:#0f3263}
+.btn.ghost{background:transparent;color:var(--navy);border:2px solid var(--navy)}
+.btn.ghost:hover{background:var(--wash)}
+.intro-rule{height:6px;width:72px;background:var(--blue);margin:0 0 22px;border-radius:3px}
+/* quiz */
+.bar{height:6px;background:var(--wash);border-radius:3px;overflow:hidden;margin-bottom:10px}
+.bar i{display:block;height:100%;background:var(--blue);width:0;transition:width .3s}
+.count{color:var(--gray);font-weight:600;font-size:.95rem;margin:0 0 14px}
+.q{font-size:clamp(1.45rem,4.5vw,1.9rem);line-height:1.2;font-weight:800;color:var(--navy);margin:0 0 22px}
+.opts{display:grid;gap:10px}
+.opt{display:flex;align-items:center;gap:14px;text-align:left;background:var(--white);border:2px solid var(--line);border-radius:8px;padding:14px 16px;font-size:1.05rem;color:var(--ink);line-height:1.35}
+.opt::before{content:"";flex:0 0 18px;height:18px;border-radius:50%;border:2px solid var(--line)}
+.opt:hover{border-color:var(--blue)}
+.opt.sel{border-color:var(--navy);background:var(--wash)}
+.opt.sel::before{border-color:var(--navy);background:var(--navy);box-shadow:inset 0 0 0 3px var(--wash)}
+.nav{margin-top:20px;min-height:44px}
+.back{background:none;border:0;color:var(--navy);font-weight:600;padding:10px 0;text-decoration:underline;text-underline-offset:3px}
+/* results */
+.rh{font-size:clamp(1.9rem,6vw,2.6rem);line-height:1.05;font-weight:800;color:var(--navy);margin:0 0 10px;letter-spacing:-.01em}
+.passes{display:grid;gap:16px;margin:24px 0 30px}
+.pass{display:grid;grid-template-columns:150px 1fr;border:2px solid var(--navy);border-radius:10px;overflow:hidden;background:var(--white)}
+.pass .room{background:var(--navy);color:var(--white);padding:18px 14px;display:flex;flex-direction:column;justify-content:center;text-align:center;border-right:2px dashed rgba(255,255,255,.55)}
+.room small{font-size:.85rem;opacity:.85;font-weight:600}
+.room b{font-size:1.75rem;line-height:1.05;font-weight:800;margin-top:4px;overflow-wrap:anywhere}
+.room span{font-size:.9rem;opacity:.85;margin-top:2px}
+.pass .info{padding:16px 18px}
+.field{color:var(--blue);font-weight:700;font-size:.95rem;margin:0 0 4px}
+.who{font-size:1.25rem;font-weight:800;color:var(--navy);margin:0 0 2px;line-height:1.2}
+.role{color:var(--gray);font-size:.95rem;margin:0 0 10px;line-height:1.4}
+.blurb{margin:0 0 10px;line-height:1.5}
+.why{font-size:.93rem;margin:0;line-height:1.45;color:var(--ink)}
+.why strong{color:var(--navy)}
+.more{background:var(--wash);border-radius:10px;padding:18px 20px;margin-bottom:26px}
+.more h3{margin:0 0 10px;color:var(--navy);font-size:1.1rem}
+.more ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.more li{line-height:1.4}.more li span{color:var(--gray)}
+.actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.note{color:var(--gray);font-size:.95rem;line-height:1.5;margin:22px 0 0}
+@media (max-width:540px){.pass{grid-template-columns:1fr}.pass .room{border-right:0;border-bottom:2px dashed rgba(255,255,255,.55);flex-direction:row;gap:10px;align-items:baseline;justify-content:flex-start;text-align:left;padding:12px 16px}.room b{font-size:1.35rem}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{body{padding:0}.actions,.note{display:none}.pass{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <section class="screen on" id="intro">
+  <h1>Find your Career Day match</h1>
+  <div class="intro-rule"></div>
+  <p class="lead">Twenty-seven sessions. Engineers, attorneys, a spine surgeon, Emmy-winning filmmakers, an NFL veteran, and a former NASA engineer, all coming to Maclay.</p>
+  <p class="sub">Answer eight quick questions about what you enjoy, and we&rsquo;ll match you with the speakers whose work fits you best.</p>
+  <button class="btn" id="start">Find my sessions</button>
+ </section>
+ <section class="screen" id="quiz">
+  <div class="bar"><i id="prog"></i></div>
+  <p class="count" id="count"></p>
+  <h2 class="q" id="qtext"></h2>
+  <div class="opts" id="opts"></div>
+  <div class="nav"><button class="back" id="back">Back</button></div>
+ </section>
+ <section class="screen" id="results">
+  <h2 class="rh">Your best-fit sessions</h2>
+  <p class="sub" style="margin-bottom:0">Based on your answers, these three speakers do the kind of work you&rsquo;d enjoy most.</p>
+  <div class="passes" id="passes"></div>
+  <div class="more"><h3>Also worth a look</h3><ul id="more"></ul></div>
+  <div class="actions">
+   <button class="btn" id="again">Retake the quiz</button>
+   <button class="btn ghost" id="print">Print my results</button>
+  </div>
+  <p class="note">Come with a question for each speaker. Ask how they got started, what a normal day looks like, or what they wish they&rsquo;d known in high school.</p>
+ </section>
+</div>
+<script>
+const SPEAKERS = [
+ {id:'amos',name:'Sgt. Robert Amos',field:'Law Enforcement',org:'Tallahassee Police Department',title:'Sergeant',room:'D2',
+  blurb:'13 years with TPD, from patrol to the Violent Crimes Response Team. Now leads a squad of seven officers.',
+  skills:'Active listening, compassion, staying steady under stress',tags:{safety:3,law:2,people:1,gov:1}},
+ {id:'ash',name:'Mrs. Heather Ash',field:'Speech-Language Pathology',org:'Hospital settings',title:'Speech-Language Pathologist',room:'BFIC 103 (Kline)',
+  blurb:'20 years helping trauma, stroke, and brain-injury patients speak and swallow again.',
+  skills:'Communication, collaboration, empathy',tags:{health:3,people:2,science:1,comms:1}},
+ {id:'boland',name:'Mrs. Jennifer Boland',field:'Interior Design',org:'Home Proper Interiors',title:'Owner and Principal Designer',room:'A3',
+  blurb:'FSU interior design grad who started her own Tallahassee design firm in 2012.',
+  skills:'Communication, teamwork, eye for detail',tags:{design:3,creative:2,business:1,build:1}},
+ {id:'das',name:'Dr. Tridip Das',field:'Chemical Engineering',org:'FAMU-FSU College of Engineering',title:'Assistant Professor',room:'BFIC 106 (DePrince)',
+  blurb:'Uses supercomputers and AI to design materials for better batteries and clean energy. Former Intel microchip engineer.',
+  skills:'Adaptability, resilience, empathy',tags:{science:3,engineering:2,tech:1,environment:1,data:1}},
+ {id:'davis',name:'Ms. Nina Davis',field:'Higher Education and Entrepreneurship',org:'Florida State University',title:'Sr. Academic Program Specialist',room:'A2',
+  blurb:'Spent 25+ years as an entrepreneur and business co-founder. Now advises nursing students at FSU.',
+  skills:'Leadership, problem solving, collaboration',tags:{people:2,business:2,health:1}},
+ {id:'foos',name:'Mrs. Suzanne Foos',field:'International Tax Accounting',org:'Covington & Burling LLP',title:'Senior Director of Tax',room:'RMAI 4 (Gussaroff)',
+  blurb:'Runs tax for an international law firm in 22 states and eight countries. Spent four years working in Central Europe.',
+  skills:'Organization, attention to detail, time management',tags:{finance:3,business:2,law:1,data:1}},
+ {id:'frazee',name:'Mr. Ted Frazee \u201998',field:'Electronic Security Systems',org:'Redwire',title:'President and Owner',room:'A1',
+  blurb:'Joined Redwire as an account executive and worked his way up to president. Maclay alum and former board chair.',
+  skills:'Critical thinking, empathy, communication',tags:{business:3,tech:2,safety:1,sales:1}},
+ {id:'friedman',name:'Mr. Tor Friedman',field:'Law',org:'Friedman & Abrahamsen, FSU College of Law',title:'Managing Partner and Adjunct Professor',room:'Lib 1',
+  blurb:'Former prosecutor who has handled thousands of cases. Teaches trial practice at FSU Law.',
+  skills:'Organization, communication, making complex ideas simple',tags:{law:3,comms:2,gov:1}},
+ {id:'fuller',name:'Mr. Corey Fuller',field:'Football',org:'Florida State University',title:'Director of Football Relations',room:'B4',
+  blurb:'Played ten NFL seasons with the Vikings, Browns, and Ravens, then coached at the high school and college level.',
+  skills:'Determination, encouragement, hard work',tags:{sports:3,people:2,fitness:1}},
+ {id:'gibson',name:'Mr. Bryan Gibson',field:'Technology, Cybersecurity, and AI',org:'i2x Solutions',title:'CEO and Founder',room:'RMAI 5 (Walker)',
+  blurb:'Started programming in middle school. Now leads a company that uses technology to solve real problems.',
+  skills:'Communication, organization, teamwork',tags:{tech:3,business:2,data:1}},
+ {id:'hendrix',name:'Mr. Jason Hendrix',field:'Marketing and AI',org:'Resound',title:'Director of Marketing',room:'RMAI 2 (Gimbel)',
+  blurb:'Nearly 20 years in digital marketing for higher ed, sports tourism, and government, powered by data and AI.',
+  skills:'Adaptability, storytelling, cross-team collaboration',tags:{comms:2,tech:2,data:2,media:1,sports:1}},
+ {id:'higdon',name:'Ms. Peggy Higdon',field:'Environmental Consulting and Government Relations',org:'Peggy Higdon Consulting',title:'Owner',room:'BFIC 120 (Stewart)',
+  blurb:'Marine biologist with 40 years in environmental protection and permitting. Represents the boating industry.',
+  skills:'Communication, critical thinking, coordinating across fields',tags:{environment:3,gov:2,science:1,business:1}},
+ {id:'johnson',name:'Ms. Tina Johnson',field:'Talent Management and Development',org:'Ella\u2019s World LLC',title:'Chief Operating Officer',room:'B1',
+  blurb:'Background in HR and recruiting. Helps people discover their talents and grow into them.',
+  skills:'Communication, emotional intelligence, adaptability',tags:{people:3,business:2}},
+ {id:'lee',name:'Dr. Matthew Lee',field:'Orthopedic Spine Surgery and Entrepreneurship',org:'Tallahassee Orthopedic Clinic',title:'Spine Surgeon and Business Owner',room:'BFIC 116 (Kutter)',
+  blurb:'Spine surgeon who also owns an international shoe company and Jeremiah\u2019s Italian Ice stores.',
+  skills:'Communication, resilience, empathy',tags:{health:3,business:2,science:1}},
+ {id:'lewis',name:'Mrs. Marbet Lewis',field:'Law',org:'Spirit Law Partners',title:'Partner and Owner',room:'Lib 2',
+  blurb:'Represents hotels, restaurants, stadiums, and theaters on food, beverage, and hospitality law.',
+  skills:'Active listening, clear speaking, critical thinking',tags:{law:3,business:2,comms:1}},
+ {id:'long',name:'Mr. Owen Long',field:'National Sales',org:'Demakes',title:'Director of Sales',room:'C3',
+  blurb:'Leads sales on a national level.',
+  skills:'Leadership, problem solving, collaboration',tags:{sales:3,business:2,comms:1}},
+ {id:'mayfield',name:'Mr. Henry Mayfield',field:'Heavy Civil Construction',org:'M of Tallahassee',title:'President',room:'C4',
+  blurb:'Leads major road and infrastructure projects across North Florida. Past chair of the Florida Transportation Builders\u2019 Association.',
+  skills:'Leadership, problem solving, communication',tags:{build:3,engineering:2,business:1}},
+ {id:'levelup',name:'Mr. Josh McLawhorn and Ms. Gaby Rodeiro',field:'Filmmaking and Photography',org:'Level Up Digital Media',title:'President; Video Producer and Editor',room:'C1',
+  blurb:'Nine Emmy Awards and a Super Bowl commercial between them. Gaby was a chemist before she became a filmmaker.',
+  skills:'Patience, communication, adaptability',tags:{media:3,creative:2,design:1,tech:1}},
+ {id:'pettit',name:'Mrs. Kira Pettit \u201908',field:'Retail and Boutique Ownership',org:'Mode & Mercantile',title:'Owner',room:'B3',
+  blurb:'Maclay alum who turned a love of fashion into her own Tallahassee boutique.',
+  skills:'Communication, creative problem solving, leadership',tags:{business:2,creative:2,sales:2,design:1}},
+ {id:'pistro',name:'Dr. Kevin Pistro',field:'Clinical Psychology, Corrections, and Fitness',org:'CoreCivic; Premier Health and Fitness',title:'Consultant and Certified Personal Trainer',room:'B2',
+  blurb:'Psychologist who retired from the Federal Bureau of Prisons. Now a correctional consultant and personal trainer.',
+  skills:'Building relationships, active listening, clear communication',tags:{health:2,safety:2,fitness:2,people:1}},
+ {id:'powell',name:'Mrs. Jennifer Powell',field:'Photography and Dance',org:'Jennifer Powell Photography; Area 15 Dance Studio',title:'Owner',room:'C2',
+  blurb:'22 years behind the camera, plus a dance studio where students learn, grow, and belong.',
+  skills:'Creativity, leadership, adaptability',tags:{creative:3,media:2,business:1,fitness:1}},
+ {id:'scavone',name:'Officer Robert Scavone',field:'Police and Crime Prevention',org:'Florida State University Police',title:'Crime Prevention and Field Training Officer',room:'D3',
+  blurb:'Former professional musician from Manhattan. Now teaches crime prevention and self-defense at FSU.',
+  skills:'Communication, empathy, patience',tags:{safety:3,people:2,law:1,fitness:1}},
+ {id:'schwartz',name:'Mr. Zachary Schwartz',field:'Geographic Information Systems (GIS)',org:'DMI Sciences',title:'Principal and Senior Analyst',room:'RMAI 3 (Allee)',
+  blurb:'Set out to be an archaeologist and became a mapmaker. Now turns data into maps and visuals.',
+  skills:'Networking, active listening, adaptability',tags:{data:3,tech:2,design:1,environment:1}},
+ {id:'tatro',name:'Mr. David Tatro',field:'Aerospace and Defense Engineering',org:'Lockheed Martin',title:'VP of Operations',room:'BFIC 107 (Perry)',
+  blurb:'Industrial and systems engineer who leads production and advanced manufacturing at Lockheed Martin.',
+  skills:'Teamwork, problem solving, innovation',tags:{engineering:3,space:2,business:1,build:1}},
+ {id:'theriot',name:'Mrs. Maggie Theriot',field:'Local Government and Public Service',org:'Leon County Government',title:'Director, Office of Resource Stewardship',room:'D4',
+  blurb:'Has spent 20+ years launching programs that make a difference in the community she grew up in.',
+  skills:'Reading a room, caring about people, comfort with complexity',tags:{gov:3,environment:2,people:1}},
+ {id:'weber',name:'Ms. Ashlee Weber',field:'Communications',org:'Florida Surplus Lines Service Office',title:'Director of Communications',room:'D1',
+  blurb:'Communications director, former ad agency creative director, and professional actor.',
+  skills:'Communication, organization, teamwork',tags:{comms:3,creative:2,media:1}},
+ {id:'zimmerman',name:'Ms. Brittany Zimmerman',field:'Aerospace and Environmental Engineering',org:'Yummet',title:'CEO',room:'BFIC 121 (Kup)',
+  blurb:'Youngest-ever NASA Principal Investigator. Now turns space technology into solutions for waste, water, and energy.',
+  skills:'Creativity, communication, adaptability',tags:{space:3,engineering:2,environment:2,business:1,science:1}}
+];
+const LABELS={law:'law',safety:'public safety',health:'health and medicine',science:'science',engineering:'engineering',environment:'the environment',tech:'technology',data:'data and analysis',business:'business',finance:'finance',creative:'creative work',media:'film and media',design:'design',sports:'sports',fitness:'fitness',gov:'public service',people:'helping people grow',comms:'communication',build:'building things',space:'aerospace',sales:'sales'};
+const QUESTIONS=[
+ {q:'Which class do you look forward to most?',o:[
+  ['Science, especially lab days',{science:2,health:1,environment:1}],
+  ['Math',{data:2,finance:1,engineering:1}],
+  ['English or history',{comms:2,law:1}],
+  ['Art, design, or photography',{creative:2,design:1,media:1}],
+  ['Computer science or anything tech',{tech:2,data:1}],
+  ['Economics or business',{business:2,finance:1,sales:1}],
+  ['PE or my sport',{sports:2,fitness:1}]]},
+ {q:'It\u2019s a free Saturday. What are you most likely doing?',o:[
+  ['Building, fixing, or taking something apart',{engineering:2,build:2}],
+  ['Making something: photos, videos, outfits, art',{creative:2,media:1,design:1}],
+  ['Practicing, training, or playing a game',{sports:2,fitness:2}],
+  ['Outside fishing, hiking, or at the beach',{environment:3},['higdon']],
+  ['Volunteering or helping someone out',{people:2,gov:1}],
+  ['Working on a side hustle or selling something',{business:2,sales:2}],
+  ['Coding, gaming, or tinkering with tech',{tech:3}]]},
+ {q:'Which problem would you most like to help solve?',o:[
+  ['Helping people heal and feel better',{health:3}],
+  ['Keeping people safe and treated fairly',{safety:2,law:2}],
+  ['Protecting the environment and finding cleaner energy',{environment:2,science:1,engineering:1}],
+  ['Making technology smarter and more secure',{tech:2,data:1}],
+  ['Building better roads, homes, and places to live',{build:2,design:1,engineering:1}],
+  ['Telling stories that change how people think',{media:2,comms:2}],
+  ['Helping people reach their potential',{people:3}]]},
+ {q:'Where would you most like to spend your workday?',o:[
+  ['A hospital or clinic',{health:3}],
+  ['A downtown office, courtroom, or boardroom',{law:1,business:2,finance:1}],
+  ['A lab, or in front of a powerful computer',{science:2,tech:1,data:1}],
+  ['Outdoors or on a job site',{build:2,environment:2}],
+  ['A studio or on set',{creative:2,media:2}],
+  ['On the field or in the gym',{sports:2,fitness:2}],
+  ['Out in the community, where no two days are the same',{safety:2,gov:1,people:1},['scavone','amos']]]},
+ {q:'In a group project, you\u2019re usually the one who\u2026',o:[
+  ['Takes the lead and keeps everyone on track',{business:2,people:1}],
+  ['Digs into the research and the numbers',{data:2,science:1,finance:1}],
+  ['Makes it look great',{design:2,creative:1}],
+  ['Presents it to the class',{comms:3,sales:1},['weber']],
+  ['Figures out how to actually build it',{engineering:2,build:1,tech:1}],
+  ['Makes sure everyone feels heard',{people:2,health:1}]]},
+ {q:'Pick a superpower for your future job.',o:[
+  ['Reading people and knowing what they need',{people:2,health:1,safety:1}],
+  ['Spotting patterns in numbers no one else sees',{data:2,finance:2},['schwartz','foos']],
+  ['Persuading anyone of anything',{law:2,sales:2,comms:1}],
+  ['Staying calm when things get intense',{safety:2,health:1,sports:1}],
+  ['Imagining things that don\u2019t exist yet',{space:2,engineering:1,creative:1,tech:1}],
+  ['Bouncing back from any setback',{sports:2,business:1,fitness:1}]]},
+ {q:'Ten years from now, you\u2019d love to\u2026',o:[
+  ['Run my own business',{business:3}],
+  ['Lead a team at a big organization',{engineering:1,business:1,gov:1,finance:1}],
+  ['Make a difference right here in my hometown',{gov:3,safety:1},['theriot']],
+  ['Make a discovery or invent something new',{science:2,space:1,engineering:1}],
+  ['Be known for my creative work',{creative:2,media:2}],
+  ['Coach or mentor the next generation',{people:2,sports:2}]]},
+ {q:'Which of these sounds most exciting?',o:[
+  ['Sending technology into space',{space:3,engineering:1},['zimmerman','tatro']],
+  ['Winning a big case in a courtroom',{law:3},['friedman','lewis']],
+  ['Filming a Super Bowl commercial',{media:3},['levelup']],
+  ['Designing a dream home',{design:3},['boland']],
+  ['Playing on Sunday in the NFL',{sports:3},['fuller']],
+  ['Building an AI tool from scratch',{tech:3},['gibson','das']],
+  ['Opening my own shop',{business:2,sales:2},['pettit']],
+  ['Helping someone walk or talk again',{health:3},['lee','ash']]]}
+];
+function score(answers){
+  const u={},bonus={};
+  answers.forEach((a,i)=>{const o=QUESTIONS[i].o[a];for(const t in o[1])u[t]=(u[t]||0)+o[1][t];(o[2]||[]).forEach(id=>bonus[id]=1);});
+  return SPEAKERS.map(s=>{let dot=0,n=0;const hits=[];for(const t in s.tags){const w=s.tags[t];dot+=w*(u[t]||0);n+=w*w;if(u[t])hits.push([t,w*u[t]]);}
+    hits.sort((a,b)=>b[1]-a[1]);
+    return {s,score:dot/Math.sqrt(n)+(bonus[s.id]?2.5:0),hits:hits.slice(0,2).map(h=>h[0])};
+  }).sort((a,b)=>b.score-a.score);
+}
+const $=id=>document.getElementById(id);
+const answers=new Array(QUESTIONS.length).fill(null);let idx=0;
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id));window.scrollTo(0,0);}
+function render(){
+  const Q=QUESTIONS[idx];
+  $('count').textContent='Question '+(idx+1)+' of '+QUESTIONS.length;
+  $('prog').style.width=(idx/QUESTIONS.length*100)+'%';
+  $('qtext').textContent=Q.q;
+  const box=$('opts');box.innerHTML='';
+  Q.o.forEach((o,i)=>{const b=document.createElement('button');b.className='opt'+(answers[idx]===i?' sel':'');b.textContent=o[0];
+    b.setAttribute('aria-pressed',answers[idx]===i);
+    b.onclick=()=>{answers[idx]=i;b.classList.add('sel');setTimeout(next,180);};box.appendChild(b);});
+  $('back').style.visibility=idx===0?'hidden':'visible';
+}
+function next(){if(idx<QUESTIONS.length-1){idx++;render();$('qtext').focus?.();}else results();}
+function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML;}
+function results(){
+  const r=score(answers);
+  $('passes').innerHTML=r.slice(0,3).map(x=>{const s=x.s;const m=s.room.match(/^(.*?)\s*(\(.*\))?$/);
+    const why=x.hits.length?'<p class="why"><strong>Why it fits:</strong> your interest in '+x.hits.map(h=>LABELS[h]).join(' and ')+'.</p>':'';
+    return '<article class="pass"><div class="room"><small>Room</small><b>'+esc(m[1])+'</b>'+(m[2]?'<span>'+esc(m[2])+'</span>':'')+'</div>'+
+    '<div class="info"><p class="field">'+esc(s.field)+'</p><h3 class="who">'+esc(s.name)+'</h3><p class="role">'+esc(s.title)+', '+esc(s.org)+'</p>'+
+    '<p class="blurb">'+esc(s.blurb)+'</p>'+why+'</div></article>';}).join('');
+  $('more').innerHTML=r.slice(3,6).map(x=>'<li><strong>'+esc(x.s.name)+'</strong> <span>'+esc(x.s.field)+', Room '+esc(x.s.room)+'</span></li>').join('');
+  show('results');
+}
+$('start').onclick=()=>{idx=0;show('quiz');render();};
+$('back').onclick=()=>{if(idx>0){idx--;render();}};
+$('again').onclick=()=>{answers.fill(null);idx=0;show('quiz');render();};
+$('print').onclick=()=>window.print();
+</script>
+</body>
+</html>
